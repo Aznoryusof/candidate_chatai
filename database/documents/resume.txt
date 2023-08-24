@@ -1,0 +1,132 @@
+The following is Aznor's latest resume detailing his education, previous working experience and skillsets:
+## Aznor's Education 1
+1. Master of IT in Business
+Track: Artificial Intelligence
+School: Singapore Management University
+Year: May 2021 to Apr 2022
+Cumulative GPA: 3.64/4.0
+Award: Magna Cum Laude (High Distinction)
+
+## Aznor's Education 2
+2. Bachelor of Social Sciences 
+Major: Political Science
+2nd Major: Economics
+Year: Aug 2011 to Apr 2015
+
+## Aznor's Working Experience 1
+1. Data Scientist
+Year: May 2022 to Jul 2023
+Organisation: NCS Pte Ltd
+Aznor's Achievements: 
+a. Researched, designed and developed AI models for use-cases in Natural Language Processing (NLP), Document Understanding and Machine Learning for Proof-of-Concept studies to demonstrate the value of AI: 
+- Cleaned and pre-processed tabular and text data using Pandas and Spacy; experimented with different machine learning algorithms using sklearn and Tensorflow; developed a CNN model trained on a small dataset (n < 200) that predicts labels with > 80% accuracy and highlights important words used for prediction. 
+- Developed NLP approach to cluster similar documents based on semantic similarity using word embeddings and the overlap of words, enabling CRM system to quickly identify previously reported cases.  
+- Built and deployed a prototype NLP API that carried out Abstractive Dialogue Summarisation based on state-of-the-art Transformer models using Hugging Face and PyTorch, allowing users of call center systems to quickly understand the context of cases. 
+- Developed a working demo of an end-to-end OCR solution using PyTorch and AWS (i.e. Amazon Sagemaker, SageMaker Endpoints and Amazon S3) that automates the extraction of data from physical forms, potentially reducing cost for the customer. 
+b. Built an automated machine learning functionality in Python for an AI platform that automatically cleans and pre-processes tabular data, conducts hyper-parameter tuning to find the best performing model and provides error analysis of the model for regression or classification tasks. 
+c. Architected solution that modernizes the data engineering, data governance and analytics platform of a large public education institution by migrating legacy on-premise systems to Azure services such as Azure Data Factory, Azure SQL Managed Instance, Azure DevOps, Databricks, Azure Data Lake Storage and Power BI.
+- Reviewed existing on-premise systems of customers and evaluated different Azure and Microsoft solutions to improve data platform for use cases such as data governance.
+- Planned and executed data migration of existing on-premises MSSQL Data Warehouse, MSSQL Data Marts and MySQL databases to Azure SQL Managed Instance, ensuring data integrity and validity of migrated data.
+- Re-designed data sharing capabilities across on-premise and cloud systems by implementing SFTP workflow using Azure Data Factory and Azure Blob Storage.
+- Built data engineering pipelines to move data from on-premise data sources and conduct transformations using T-SQL and Azure Data Factory.
+- Reviewed and developed solution to automate internal data request and granting processes using tools such as Microsoft Forms, Power Automate and Microsoft Lists for: 1. end-users to review and request for data; 2. managers and data owners to review request; and 3. data administrators to grant access to data access request. 
+
+## Aznor's Working Experience 2
+2. Data Engineer (Intern)
+Year: Aug 2021 to Feb 2022
+Organisation: 99 Group
+Aznor's Achievements:
+a. Enhanced in-house data engineering platform for developers to implement data engineering pipelines using containerisation of code with docker, Airflow and Google Kubernetes Engine, allowing developers to independently build ETL pipelines using tools that the developers are familiar with. 
+b. Sourced and extracted new data from public APIs and the web using data crawlers built in Python that was used as the source of information for a new geolocation feature in a property search application. 
+c. Worked with various teams to develop and deploy data engineering pipelines in production using Git, SQL, Python, Airflow and cloud services. 
+
+## Aznor's Working Experience 3
+3. Data Scientist
+Year: Jun 2020 to May 2021
+Organisation: Singapore Tourism Board
+Aznor's Achievements:
+Gathered business user requirements across different line units within the agency and led the exploration and implementation of the following data science projects: 
+- Developed text analytics reporting service on CRM text data using topic modelling, trends analysis and dashboards. 
+- Developed and deployed fraud detection model using Word2Vec algorithm, hierarchical clustering and statistical methods on text and transaction data. 
+- Developed and deployed ETL pipelines for financial reconciliation and analytics dashboard for a multi-million-dollar digital voucher scheme, saving time and improving accuracy for finance ops. 
+
+## Aznor's Working Experience 4
+4. AI Associate Engineer (Apprentice)
+Year: Sep 2019 to May 2020
+Organisation: AI Singapore
+Aznor's Achievements:
+- Experimented with various recommendation system models, including Collaborative Filtering with PySpark, and evaluated the quality of model performance using qualitative and quantitative approaches (e.g. MAP and NDCG). 
+- Transformed sales data, performed feature engineering and deployed hybrid product recommendation engine for identifying personalised products using weighted matrix factorization and TF-IDF, maximising revenue for a multi-national corporation in the FMCG space. 
+- Acquired knowledge and skills in machine learning, deep learning, software development and experimented with newly released machine learning algorithms to solve real-world AI problems. 
+
+## Aznor's Working Experience 5
+5. Senior Manager
+Year: Aug 2017 to Aug 2019
+Organisation: Ministry of Manpower
+Aznor's Achievements:
+- Led data-driven policy reviews and developed data analytics capabilities of the division by building datasets and data reporting pipelines to monitor KPIs and review policies. 
+- Studied factors associated with the length of employments and the role of intermediaries in the matching process. Identified key intervention areas using insights from qualitative interviews, and quantitative methods, including segmentation analysis and predictive modelling. Findings led to new regulations and programmes to support lasting employments. 
+- Reviewed policies on health insurance, agency recruitment fees and living arrangements of Migrant Domestic Workers (MDWs) to identify gaps and worked with different stakeholders (including NGOs, employers and other Government Agencies) to drive policy change and improve the well-being of MDWs in Singapore. 
+
+## Aznor's Working Experience 6
+6. Senior Research Analyst
+Year: Feb 2015 to Mar 2017
+Organisation: Blackbox Research Pte Ltd
+Aznor's Achievements:
+- Delivered insights that helped companies and Government organisations better understand attitudes and perceptions of their customers and citizens through marketing and social research studies. 
+- Formulated survey approach in marketing and social research, moderated focus groups and delivered evidence-backed analysis to help companies and public sector departments better understand attitudes and perceptions of stakeholders. 
+
+## Aznor's Community Service Efforts
+- Food Distribution volunteer for the Red Cross
+- Project Homeworks volunteer for Habitat for Humanity
+- Camp Facilitator for the CARE March Camp
+- Research Intern for Janaagraha Centre for Citizenship and Democracy in Bangalore, India
+
+## Aznor's Certifications
+- Microsoft Certified Azure Data Engineer Associate from Microsoft
+- AI Certified Engineer Level I from AI Singapore
+- Advanced Certificate in Market and Social Research Practice from Market Research Society
+- Architecting with Google Kubernetes Engine Specialization from Google cloud
+- Data Scientist with Python Track from DataCamp
+- Data Scientist with R Track from DataCamp
+- Python Programmer Track from DataCamp
+- Mathematics for Machine Learning Specialization on Coursera from Imperial College London
+- Natural Language Processing Nanodegree from Udacity
+- Certified Analytical Professional (Advanced Level) from Singapore Management University
+
+## Aznor's Skills
+- R
+- Python
+- Pytorch
+- Tensorflow
+- Hugging Face
+- SQL
+- Git
+- Tableau
+- PowerBI
+- Azure
+- AWS
+- GCS
+- Docker
+- Kubernetes
+- Airflow
+- Market Research
+- Deep Learning
+- Machine Learning
+- Artificial Intelligence
+- Business Intelligence
+- Pandas
+- Scikit Learn
+- Amazon SageMaker
+- SQL Database Design
+- Data Governance
+- DevOps
+- Linux
+- Large Language models
+- LangChain
+
+
+
+
+
+

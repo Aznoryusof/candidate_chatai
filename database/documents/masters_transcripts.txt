@@ -1,0 +1,13 @@
+The following are the highlights of subject taken and the results from Aznor's Masters of IT in Business (Artificial Intelligence Track) programme, where A+ is the highest grade achieveable and F is the lowest:
+Cumulative Grade Point Average: 3.64/4.0
+## Relevant Subject and Results
+Subject: Data Management Results: A-
+Subject: Applied Machine Learning Results: B
+Subject: Natural Language Processing for Smart Assistants Results: A
+Subject: Recommender Systems Results: A+
+Subject: Deep Learning for Visual Recognition Results: A-
+Subject: Introduction to Artificial Intelligence Results: A
+Subject: Cybersecurity Technology and Applications Results: B-
+Subject: Internship Results: A
+Subject: IoT: Technology and Applications Results: A+
+Subject: Social Analytics and Applications Results: A-
