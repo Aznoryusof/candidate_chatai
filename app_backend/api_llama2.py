@@ -39,21 +39,31 @@ def is_present(json, key):
 
 #convert chat to prompt
 def convert_chat(messages):
-    system_message = [message["content"] for message in messages if message["role"]=="system"][0]
-    system_message_instruction = "You are a helpful, respectful and honest assistant for Aznor. You will be answering questions to HR and technical hiring managers who is considering Aznor for a job as a Generative AI Platform Engineer. You are only to answer questions about Aznor, the school that he has attended and the companies that he has worked for.\n"
-    system_message_instruction += system_message.split("\n----------------\n")[0]
-    system_message_context = system_message.split("\n----------------\n")[1]
-    question = [message["content"] for message in messages if message["role"]=="user"][0]
     stop = args.stop.replace("\\n", "\n")
+    if len(messages) == 1:
+        system_message_instruction = "Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question."
+        system_message_context = messages[0]["content"]
+        prompt = f"""
+        <s>[INST] <<SYS>>
+        {system_message_instruction}
+        <</SYS>>
 
-    prompt = f"""
-    <s>[INST] <<SYS>>
-    {system_message_instruction}
-    <</SYS>>
+        {system_message_context} [/INST]{stop}
+        """.strip()
+    else:
+        system_message = [message["content"] for message in messages if message["role"]=="system"][0]
+        system_message_instruction = "You are a helpful, respectful and honest assistant for Aznor. You will be answering questions to HR and technical hiring managers who is considering Aznor for a job as a Generative AI Platform Engineer. You are only to answer questions about Aznor, the school that he has attended and the companies that he has worked for.\n"
+        system_message_instruction += system_message.split("\n----------------\n")[0]
+        system_message_context = system_message.split("\n----------------\n")[1]
+        question = [message["content"] for message in messages if message["role"]=="user"][0]
+        prompt = f"""
+        <s>[INST] <<SYS>>
+        {system_message_instruction}
+        <</SYS>>
 
-    {system_message_context}
-    Question: {question} [/INST]{stop}
-    """.strip()
+        {system_message_context}
+        Question: {question} [/INST]{stop}
+        """.strip()
 
     # prompt = "" + args.chat_prompt.replace("\\n", "\n")
     # system_n = args.system_name.replace("\\n", "\n")

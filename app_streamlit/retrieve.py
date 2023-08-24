@@ -56,23 +56,20 @@ def build_chain():
     )
 
     # Specify the variables and template to 
-    condense_qa_template = """
-    Given the following conversation and a follow up question, rephrase the follow up question
-    to be a standalone question.
-
+    condensed_template = """
     Chat History:
     {chat_history}
     Follow Up Input: {question}
     Standalone question:"""
 
-    standalone_question_prompt = PromptTemplate.from_template(
-        condense_qa_template
+    condense_question_prompt = PromptTemplate.from_template(
+        condensed_template
     )
     
     qa = ConversationalRetrievalChain.from_llm(
         llm=llm,
         retriever=db.as_retriever(search_kwargs={"k": TOP_K}),
-        condense_question_prompt=standalone_question_prompt,
+        condense_question_prompt=condense_question_prompt,
         return_source_documents=True,
         get_chat_history=_get_chat_history
     )
@@ -91,4 +88,6 @@ if __name__ == "__main__":
     #prompt = "Hi, how many world cups have singapore won in football?"
 
     chain = build_chain()
-    output = run_chain(chain, prompt, [])
+    output = run_chain(chain, prompt, [{"role": "user", "content": "Hi, my name is Vincent."}, {"role": "assistant", "content": "Hi Vincent. Pleasure to meet you."}])
+    print(output["answer"], end="\n\n")
+    print(output["source_documents"])
