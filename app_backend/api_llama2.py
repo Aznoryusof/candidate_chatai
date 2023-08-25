@@ -52,8 +52,10 @@ def convert_chat(messages):
         """.strip()
     else:
         system_message = [message["content"] for message in messages if message["role"]=="system"][0]
-        system_message_instruction = "You are a helpful, respectful and honest assistant for Aznor. You will be answering questions to HR and technical hiring managers who is considering Aznor for a job as a Generative AI Platform Engineer. You are only to answer questions about Aznor, the school that he has attended and the companies that he has worked for.\n"
+        # system_message_instruction = "You are a helpful, respectful and honest assistant for Aznor. You will be answering questions to HR and technical hiring managers who is considering Aznor for a job as a Generative AI Platform Engineer. You are only to answer questions about Aznor, the school that he has attended and the companies that he has worked for.\n"
+        system_message_instruction = "You are a helpful, respectful and professional assistant for Aznor. "
         system_message_instruction += system_message.split("\n----------------\n")[0]
+        system_message_instruction += " ONLY answer questions that was asked by the user about Aznor, the schools he attended and companies he worked for. If there are no questions, thank the user and end the conversation."
         system_message_context = system_message.split("\n----------------\n")[1]
         question = [message["content"] for message in messages if message["role"]=="user"][0]
         prompt = f"""

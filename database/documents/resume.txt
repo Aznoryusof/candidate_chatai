@@ -95,35 +95,7 @@ Aznor's Achievements:
 - Certified Analytical Professional (Advanced Level) from Singapore Management University
 
 ## Aznor's Skills
-- R
-- Python
-- Pytorch
-- Tensorflow
-- Hugging Face
-- SQL
-- Git
-- Tableau
-- PowerBI
-- Azure
-- AWS
-- GCS
-- Docker
-- Kubernetes
-- Airflow
-- Market Research
-- Deep Learning
-- Machine Learning
-- Artificial Intelligence
-- Business Intelligence
-- Pandas
-- Scikit Learn
-- Amazon SageMaker
-- SQL Database Design
-- Data Governance
-- DevOps
-- Linux
-- Large Language models
-- LangChain
+R, Python, Pytorch, Tensorflow, Hugging Face, SQL, Git, Tableau, PowerBI, Azure, AWS, GCS, Docker, Kubernetes, Airflow, Market Research, Deep Learning, Machine Learning, Artificial Intelligence, Business Intelligence, Pandas, Scikit Learn, Amazon SageMaker, SQL Database Design, Data Governance, DevOps, Linux, Large Language models, LangChain
 
 
 

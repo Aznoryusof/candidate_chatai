@@ -8,3 +8,5 @@ database/db
 deploy.sh
 references
 TODO
+*/__pycache__/
+.streamlit/

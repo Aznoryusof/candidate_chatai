@@ -77,7 +77,7 @@ def build_chain():
     return qa
 
 
-def run_chain(chain, prompt, history):
+def run_chain(chain, prompt, history=[]):
     return chain({"question": prompt, "chat_history": history})
 
 
