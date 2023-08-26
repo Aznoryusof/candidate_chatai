@@ -35,7 +35,7 @@ def _get_chat_history(inputs):
     return "\n".join(res)
 
 
-def build_chain(embedding_function=None, stream_handler=None):
+def build_chain(embedding_function=None, callbacks=None):
     # Define the embedding function used for documents
     if not embedding_function:
         embedding_function = HuggingFaceInstructEmbeddings(
@@ -54,7 +54,7 @@ def build_chain(embedding_function=None, stream_handler=None):
         openai_api_base=OPEN_AI_BASE,
         temperature=TEMPERATURE,
         streaming=True,
-        callbacks=[stream_handler]
+        callbacks=callbacks
     )
 
     # Specify the variables and template to 

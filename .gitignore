@@ -10,3 +10,4 @@ references
 TODO
 */__pycache__/
 .streamlit/
+logs

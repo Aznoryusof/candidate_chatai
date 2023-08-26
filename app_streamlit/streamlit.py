@@ -8,14 +8,19 @@ import streamlit as st
 from dotenv import load_dotenv
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.callbacks.base import BaseCallbackHandler
-from langchain.schema import ChatMessage
+from langchain.callbacks import FileCallbackHandler
 from app_streamlit.retrieve import build_chain, run_chain
+from loguru import logger
 
 load_dotenv()
 
 EMBEDDING_MODEL = os.environ.get('EMBEDDING_MODEL')
 MAX_HISTORY_LENGTH = int(os.environ.get('MAX_HISTORY_LENGTH'))
 REPHRASED_TOKEN = os.environ.get('REPHRASED_TOKEN') # This helps streamlit to ignore the response from the API used to rephrase the question based on history
+LOG_FILE_PATH = os.path.join(MAIN_DIR, os.environ.get('LOG_FILE_PATH'))
+
+logger.add(LOG_FILE_PATH, colorize=True, enqueue=True)
+log_handler = FileCallbackHandler(LOG_FILE_PATH)
 
 st.set_page_config(page_title="AIAssistant-Aznor", page_icon="🧑‍💼")
 
@@ -93,15 +98,16 @@ def render_app():
         with st.chat_message("assistant"):
             answer_placeholder = st.empty()
             stream_handler = StreamHandler(answer_placeholder)
-            chain = build_chain(embedding_function, stream_handler)
+            chain = build_chain(embedding_function, [stream_handler, log_handler])
             try:
                 output = run_chain(chain, prompt, st.session_state.chat_dialogue)
                 answer = output["answer"]
+                logger.info(output)
             except Exception:
                 output = {}
                 answer = "I am sorry I am unable to respond to your question."
+                logger.info(output)
                 answer_placeholder.markdown(answer + "▌")
-            # st.markdown(output_response)
             if 'source_documents' in output:
                 with st.expander("Documents Referenced"):
                     for _sd in output.get('source_documents'):
