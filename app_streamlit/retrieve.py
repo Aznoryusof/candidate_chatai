@@ -35,12 +35,12 @@ def _get_chat_history(inputs):
     return "\n".join(res)
 
 
-def build_chain():
+def build_chain(embedding_function=None, stream_handler=None):
     # Define the embedding function used for documents
-    embedding_function = HuggingFaceInstructEmbeddings(
-        model_name=EMBEDDING_MODEL,
-
-    )
+    if not embedding_function:
+        embedding_function = HuggingFaceInstructEmbeddings(
+            model_name=EMBEDDING_MODEL
+        )
 
     # Instantiate the document vector DB from the path
     db = Chroma(
@@ -52,7 +52,9 @@ def build_chain():
     llm = ChatOpenAI(
         openai_api_key=API_KEY,
         openai_api_base=OPEN_AI_BASE,
-        temperature=TEMPERATURE
+        temperature=TEMPERATURE,
+        streaming=True,
+        callbacks=[stream_handler]
     )
 
     # Specify the variables and template to 
@@ -79,15 +81,3 @@ def build_chain():
 
 def run_chain(chain, prompt, history=[]):
     return chain({"question": prompt, "chat_history": history})
-
-
-if __name__ == "__main__":
-    #prompt = "Hi, can you tell me more about Aznor and how he can contribute as an AI Platform Engineer?"
-    prompt = "Hi, give me a summary of Aznor's work experience in the past three years in bullet points. It is now 2023."
-    #prompt = "Hi, can you tell me more about Elon Musk?"
-    #prompt = "Hi, how many world cups have singapore won in football?"
-
-    chain = build_chain()
-    output = run_chain(chain, prompt, [{"role": "user", "content": "Hi, my name is Vincent."}, {"role": "assistant", "content": "Hi Vincent. Pleasure to meet you."}])
-    print(output["answer"], end="\n\n")
-    print(output["source_documents"])
