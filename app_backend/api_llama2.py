@@ -12,14 +12,11 @@ load_dotenv()
 MAIN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(MAIN_DIR)
 API_KEY = os.environ.get('API_KEY')
+REPHRASED_TOKEN = os.environ.get('REPHRASED_TOKEN')
 
 app = Flask(__name__)
 
 parser = argparse.ArgumentParser(description="An example of using server.cpp with a similar API to OAI. It must be used together with server.cpp.")
-parser.add_argument("--chat-prompt", type=str, help="the top prompt in chat completions(default: 'A chat between a curious user and an artificial intelligence assistant. The assistant follows the given rules no matter what.\\n')", default='A chat between a curious user and an artificial intelligence assistant. The assistant follows the given rules no matter what.\\n')
-parser.add_argument("--user-name", type=str, help="USER name in chat completions(default: '\\nUSER: ')", default="\\nUSER: ")
-parser.add_argument("--ai-name", type=str, help="ASSISTANT name in chat completions(default: '\\nASSISTANT: ')", default="\\nASSISTANT: ")
-parser.add_argument("--system-name", type=str, help="SYSTEM name in chat completions(default: '\\nASSISTANT's RULE: ')", default="\\nASSISTANT's RULE: ")
 parser.add_argument("--stop", type=str, help="the end of response in chat completions(default: '</s>')", default="</s>")
 parser.add_argument("--llama-api", type=str, help="Set the address of server.cpp in llama.cpp(default: http://127.0.0.1:8080)", default='http://127.0.0.1:8080')
 parser.add_argument("--api-key", type=str, help="Set the api key to allow only few user(default: NULL)", default=API_KEY)
@@ -28,13 +25,13 @@ parser.add_argument("--port", type=int, help="Set the port to listen.(default: 8
 
 args = parser.parse_args()
 
+
 def is_present(json, key):
     try:
         buf = json[key]
     except KeyError:
         return False
     return True
-
 
 
 #convert chat to prompt
@@ -50,14 +47,16 @@ def convert_chat(messages):
 
         {system_message_context} [/INST]{stop}
         """.strip()
+
+        return prompt, True
     else:
         system_message = [message["content"] for message in messages if message["role"]=="system"][0]
-        # system_message_instruction = "You are a helpful, respectful and honest assistant for Aznor. You will be answering questions to HR and technical hiring managers who is considering Aznor for a job as a Generative AI Platform Engineer. You are only to answer questions about Aznor, the school that he has attended and the companies that he has worked for.\n"
         system_message_instruction = "You are a helpful, respectful and professional assistant for Aznor. "
         system_message_instruction += system_message.split("\n----------------\n")[0]
         system_message_instruction += " ONLY answer questions that was asked by the user about Aznor, the schools he attended and companies he worked for. If there are no questions, thank the user and end the conversation."
         system_message_context = system_message.split("\n----------------\n")[1]
         question = [message["content"] for message in messages if message["role"]=="user"][0]
+        question = question.replace(REPHRASED_TOKEN, "")
         prompt = f"""
         <s>[INST] <<SYS>>
         {system_message_instruction}
@@ -67,37 +66,13 @@ def convert_chat(messages):
         Question: {question} [/INST]{stop}
         """.strip()
 
-    # prompt = "" + args.chat_prompt.replace("\\n", "\n")
-    # system_n = args.system_name.replace("\\n", "\n")
-    # user_n = args.user_name.replace("\\n", "\n")
-    # ai_n = args.ai_name.replace("\\n", "\n")
-    
-    # for line in messages:
-    #     if (line["role"] == "system"):
-    #         prompt += f"{system_n}{line['content']}"
-    #     if (line["role"] == "user"):
-    #         prompt += f"{user_n}{line['content']}"
-    #     if (line["role"] == "assistant"):
-    #         prompt += f"{ai_n}{line['content']}{stop}"
-    # prompt += ai_n.rstrip()
-
-    print(prompt)
-
-    return prompt
-
-# body -> {'messages': [{...}, {...}], 'model': 'gpt-3.5-turbo', 'max_tokens': None, 'stream': False, 'n': 1, 'temperature': 0.0}
-# "messages" -> [
-#   {'role': 'system', 'content': 'You are a helpful as...one answer'}
-#   {'role': 'user', 'content': 'football clubs from Singapore'}
-# ]
-
-
+        return prompt, False
 
 
 def make_postData(body, chat=False, stream=False):
     postData = {}
     if (chat):
-        postData["prompt"] = convert_chat(body["messages"])
+        postData["prompt"], is_rephrase_request = convert_chat(body["messages"])
     else:
         postData["prompt"] = body["prompt"]
     if(is_present(body, "temperature")): postData["temperature"] = body["temperature"]
@@ -120,7 +95,7 @@ def make_postData(body, chat=False, stream=False):
     postData["n_keep"] = -1
     postData["stream"] = stream
 
-    return postData
+    return postData, is_rephrase_request
 
 def make_resData(data, chat=False, promptToken=[]):
     resData = {
@@ -199,7 +174,7 @@ def chat_completions():
     tokenize = False
     if(is_present(body, "stream")): stream = body["stream"]
     if(is_present(body, "tokenize")): tokenize = body["tokenize"]
-    postData = make_postData(body, chat=True, stream=stream)
+    postData, is_rephrase_request = make_postData(body, chat=True, stream=stream)
 
     promptToken = []
     if (tokenize):
@@ -221,42 +196,12 @@ def chat_completions():
                 if line:
                     decoded_line = line.decode('utf-8')
                     resData = make_resData_stream(json.loads(decoded_line[6:]), chat=True, time_now=time_now)
+                    if is_rephrase_request:
+                        resData["choices"][0]["delta"]["content"] = REPHRASED_TOKEN + resData["choices"][0]["delta"]["content"]
+                    # print(resData["choices"][0]["delta"]["content"])
                     yield 'data: {}\n'.format(json.dumps(resData))
         return Response(generate(), mimetype='text/event-stream')
-
-
-@app.route('/completions', methods=['POST'])
-@app.route('/v1/completions', methods=['POST'])
-def completion():
-    if (args.api_key != "" and request.headers["Authorization"].split()[1] != args.api_key):
-        return Response(status=403)
-    body = request.get_json()
-    stream = False
-    tokenize = False
-    if(is_present(body, "stream")): stream = body["stream"]
-    if(is_present(body, "tokenize")): tokenize = body["tokenize"]
-    postData = make_postData(body, chat=False, stream=stream)
-
-    promptToken = []
-    if (tokenize):
-        tokenData = requests.request("POST", urllib.parse.urljoin(args.llama_api, "/tokenize"), data=json.dumps({"content": postData["prompt"]})).json()
-        promptToken = tokenData["tokens"]
-
-    if (not stream):
-        data = requests.request("POST", urllib.parse.urljoin(args.llama_api, "/completion"), data=json.dumps(postData))
-        print(data.json())
-        resData = make_resData(data.json(), chat=False, promptToken=promptToken)
-        return jsonify(resData)
-    else:
-        def generate():
-            data = requests.request("POST", urllib.parse.urljoin(args.llama_api, "/completion"), data=json.dumps(postData), stream=True)
-            time_now = int(time.time())
-            for line in data.iter_lines():
-                if line:
-                    decoded_line = line.decode('utf-8')
-                    resData = make_resData_stream(json.loads(decoded_line[6:]), chat=False, time_now=time_now)
-                    yield 'data: {}\n'.format(json.dumps(resData))
-        return Response(generate(), mimetype='text/event-stream')
+    
 
 if __name__ == '__main__':
     app.run(args.host, port=args.port)
