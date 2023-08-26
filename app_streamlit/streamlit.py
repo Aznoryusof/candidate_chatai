@@ -6,17 +6,31 @@ sys.path.append(MAIN_DIR)
 
 import streamlit as st
 from dotenv import load_dotenv
-# import app_streamlit.retrieve as llama2
+from langchain.embeddings import HuggingFaceInstructEmbeddings
+from langchain.callbacks.base import BaseCallbackHandler
+from langchain.schema import ChatMessage
 from app_streamlit.retrieve import build_chain, run_chain
 
 load_dotenv()
 
+EMBEDDING_MODEL = os.environ.get('EMBEDDING_MODEL')
 MAX_HISTORY_LENGTH = int(os.environ.get('MAX_HISTORY_LENGTH'))
-
-# st.session_state["llm_app"] = llama2
-# st.session_state["llm_chain"] = llama2.build_chain() # i.e. ConversationalRetrievalChain
+REPHRASED_TOKEN = os.environ.get('REPHRASED_TOKEN') # This helps streamlit to ignore the response from the API used to rephrase the question based on history
 
 st.set_page_config(page_title="AIAssistant-Aznor", page_icon="🧑‍💼")
+
+
+class StreamHandler(BaseCallbackHandler):
+    def __init__(self, container, initial_text="", rephrased_token=REPHRASED_TOKEN):
+        self.container=container
+        self.text=initial_text
+        self.is_rephrased=None
+        self.rephrased_token=REPHRASED_TOKEN
+
+    def on_llm_new_token(self, token, **kwargs):
+        if self.rephrased_token not in token:
+            self.text+=token
+            self.container.markdown(self.text + "▌")
 
 
 def render_app():
@@ -45,29 +59,30 @@ def render_app():
 
     st.subheader("Hello, I am an AI Assistant. \n\n I am here to share more about Aznor and how he can be an asset to GenAI CoE as a Generative AI Platform Engineer. \n\n Ask me anything in the chat box below.")
 
-    # User input
-    st.container()
-    st.container()
-
     if "chat_dialogue" not in st.session_state:
         st.session_state["chat_dialogue"] = []
 
-    # if "llm" not in st.session_state:
-    #     st.session_state["llm"] = llama2
-    #     st.session_state["llm_chain"] = llama2.build_chain()
+    if "chat_dialogue_display" not in st.session_state:
+        st.session_state["chat_dialogue_display"] = []
 
     def clear_history():
         st.session_state["chat_dialogue"] = []
 
+    def clear_history_all():
+        st.session_state["chat_dialogue"] = []
+        st.session_state["chat_dialogue_display"] = []
+
+    embedding_function = HuggingFaceInstructEmbeddings(
+        model_name=EMBEDDING_MODEL
+    )
+
     # Display chat messages from history on app rerun
-    for message in st.session_state.chat_dialogue:
+    for message in st.session_state.chat_dialogue_display:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
     if len(st.session_state.chat_dialogue) >= MAX_HISTORY_LENGTH:
         clear_history()
-    
-    chain = build_chain()
 
     if prompt := st.chat_input("Type your questions here..."):
         # Display user message in chat message container
@@ -77,37 +92,33 @@ def render_app():
         # Display message from LLM
         with st.chat_message("assistant"):
             answer_placeholder = st.empty()
-            answer = ""
-            # for dict_message in st.session_state.chat_dialogue:
-            #     if dict_message["role"] == "user":
-            #         string_dialogue = "User: " + dict_message["content"] + "\n\n"
-            #     else:
-            #         string_dialogue = "Assistant: " + dict_message["content"] + "\n\n"
-            # llm_chain = st.session_state["llm_chain"]
-            # chain = st.session_state["llm_app"]
+            stream_handler = StreamHandler(answer_placeholder)
+            chain = build_chain(embedding_function, stream_handler)
             try:
                 output = run_chain(chain, prompt, st.session_state.chat_dialogue)
+                answer = output["answer"]
             except Exception:
                 output = {}
-                output["answer"] = "I am sorry I am unable to respond to your question."
-            answer = output.get("answer")
+                answer = "I am sorry I am unable to respond to your question."
+                answer_placeholder.markdown(answer + "▌")
+            # st.markdown(output_response)
             if 'source_documents' in output:
-                with st.expander("Sources"):
+                with st.expander("Documents Referenced"):
                     for _sd in output.get('source_documents'):
                         _sd_metadata = _sd.metadata
-                        source = _sd_metadata.get('source')
-                        title = _sd_metadata.get('title')
-                        st.write(f"{title} --> {source}")
-            answer_placeholder.markdown(answer + "▌")
-            # Add user message to chat history
+                        source = _sd_metadata.get("source")
+                        st.text(f"Location: {source}")
+            # Add user message to chat history and display
             st.session_state.chat_dialogue.append({"role": "user", "content": prompt})
-            # Add assistant response to chat history
+            st.session_state.chat_dialogue_display.append({"role": "user", "content": prompt})
+            # Add assistant response to chat history and display
             st.session_state.chat_dialogue.append({"role": "assistant", "content": answer})
+            st.session_state.chat_dialogue_display.append({"role": "assistant", "content": answer})
         col1, col2 = st.columns([10, 4])
         with col1:
             pass
         with col2:
-            st.button("Clear History", use_container_width=True, on_click=clear_history)
+            st.button("Clear History", use_container_width=True, on_click=clear_history_all)
 
 render_app()
 
