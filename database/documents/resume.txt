@@ -1,14 +1,15 @@
 The following is Aznor's latest resume detailing his education, previous working experience and skillsets:
 ## Aznor's Education 1
 1. Master of IT in Business
-Track: Artificial Intelligence
 School: Singapore Management University
+Track: Artificial Intelligence
 Year: May 2021 to Apr 2022
 Cumulative GPA: 3.64/4.0
 Award: Magna Cum Laude (High Distinction)
 
 ## Aznor's Education 2
-2. Bachelor of Social Sciences 
+2. Bachelor of Social Sciences
+School: Singapore Management University
 Major: Political Science
 2nd Major: Economics
 Year: Aug 2011 to Apr 2015
