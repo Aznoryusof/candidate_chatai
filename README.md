@@ -1,16 +1,16 @@
 # Job Candidate Chat AI Assistant
 Job Candidate Chat AI Assistant is a **generative AI application** that enables users to 
-learn more about a job candidate's background, skills and projects through an interactive 
-chat interface. It is designed as a Retrieval Augmented Generation (RAG) workflow
-where the LLM's prompts are grounded on the documents provided by the candidate
+learn more about a **job candidate's background, skills and projects through an interactive 
+chat interface**. It is designed as a Retrieval Augmented Generation (RAG) workflow
+where the prompts sent to an LLM are grounded on the documents provided by the candidate
 (i.e. stored as files in database/documents), thereby allowing the LLM to be able
-to be prompted to respond to users regarding questions about the job candidate.
+to be prompted to respond on specific questions about the job candidate.
 
-The following shows an example.<br><br>
+The following is an example of the AI Assistant.<br><br>
 <img src="images/candidate_chat_demo.gif" width="500" height="250"/>
 
-This application can be deployed on a single machine with a GPU, entirely locally
-without requiring any data to be sent to an external API. The chat model is based
+This application can be deployed entirely on a single machine with a GPU without 
+requiring any data to be sent to an external API. The chat model is based
 on a *quantized* version of **Meta's Llama 2 Chat** variant that is open-sourced and 
 publicly available for download. When running inference, the model load is shared across
 the system's GPU and CPU components.
@@ -22,11 +22,11 @@ The following describes the step-by-step process of setting up the application u
 docker containers on a Linux machine.
 
 ## 1. Installation and Environment Setup 
-1. Pre-requisites<br>
-The following are required to run the application:
-- Python
-- Docker
-- NVIDIA CUDA Toolkit and [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+1. Pre-requisites.<br>
+    The following are required to run the application:
+    - Python
+    - Docker
+    - NVIDIA CUDA Toolkit and [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 2.  Clone the repository to a folder of your choice. 
     ```
@@ -41,7 +41,7 @@ The following are required to run the application:
     pip install -r requirements.txt
     ```
 
-4.  Add Environment Variables<br>
+4.  Add Environment Variables.<br>
     Create an .env file in the main directory with the variables shown below.
     The API_KEY can be any string as the model server is running locally.
     Here I have used 123 as an example.
@@ -67,12 +67,15 @@ The following are required to run the application:
     ```
     The code above would also download the embeddings model and save the
     embeddings model in models/embeddings (specified in the .env file created 
-    above).
+    above). The directory containing the models and the .env file would later 
+    be attached as volumes to the docker containers at runtime in the subsequent
+    steps.
 
-6.  Retrieve the model files.
+6.  Retrieve the model files.<br>
     Two variants of the Llama 2 chat models are provided in this example - 
-    a 7B and a 13B. While the 13B model is slightly more performant, inference
-    time is much slower and the model takes longer to download than the 7B model. The two models can be downloaded from my Hugging Face repository into the models directory with the code below.
+    a 7B and a 13B model. While the 13B model is slightly more performant, inference
+    time is much slower and the model takes longer to download than the 7B model. The two models can be downloaded from my Hugging Face repository into the models directory with the 
+    commands below.
 
     7B model:
     ```
@@ -86,13 +89,13 @@ The following are required to run the application:
     ```
 
 ## 2. Deployment with Docker
-In this section, the three services that will be deployed in docker containers
+In this section, the **three services** that will be deployed as docker containers
 are:
 - Backend Model API using Flask
 - Backend Model Server using [llama.cpp](https://github.com/ggerganov/llama.cpp)
 - Frontend Chat Interface Application using Streamlit
 
-Run the following docker instructions in the main directory.
+Run the following docker instructions in the main directory for each of the service.
 
 1.  Backend Model API using Flask.<br>
     Build the docker image.
