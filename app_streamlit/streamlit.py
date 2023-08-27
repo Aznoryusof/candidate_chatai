@@ -14,7 +14,8 @@ from loguru import logger
 
 load_dotenv()
 
-EMBEDDING_MODEL = os.environ.get('EMBEDDING_MODEL')
+EMBEDDINGS_MODEL = os.environ.get('EMBEDDINGS_MODEL')
+EMBEDDINGS_PATH = os.environ.get('EMBEDDINGS_PATH')
 MAX_HISTORY_LENGTH = int(os.environ.get('MAX_HISTORY_LENGTH'))
 REPHRASED_TOKEN = os.environ.get('REPHRASED_TOKEN') # This helps streamlit to ignore the response from the API used to rephrase the question based on history
 LOG_FILE_PATH = os.path.join(MAIN_DIR, os.environ.get('LOG_FILE_PATH'))
@@ -78,7 +79,8 @@ def render_app():
         st.session_state["chat_dialogue_display"] = []
 
     embedding_function = HuggingFaceInstructEmbeddings(
-        model_name=EMBEDDING_MODEL
+        model_name=EMBEDDINGS_MODEL,
+        cache_folder=EMBEDDINGS_PATH
     )
 
     # Display chat messages from history on app rerun

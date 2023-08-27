@@ -14,7 +14,8 @@ MAIN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(MAIN_DIR)
 
 DB_PATH = os.environ.get('DB_PATH')
-EMBEDDING_MODEL = os.environ.get('EMBEDDING_MODEL')
+EMBEDDINGS_MODEL = os.environ.get('EMBEDDINGS_MODEL')
+EMBEDDINGS_PATH = os.environ.get('EMBEDDINGS_PATH')
 OPEN_AI_BASE=os.environ.get('OPEN_AI_BASE')
 API_KEY=os.environ.get('API_KEY')
 SEED=int(os.environ.get('SEED'))
@@ -39,7 +40,8 @@ def build_chain(embedding_function=None, callbacks=None):
     # Define the embedding function used for documents
     if not embedding_function:
         embedding_function = HuggingFaceInstructEmbeddings(
-            model_name=EMBEDDING_MODEL
+            model_name=EMBEDDINGS_MODEL,
+            cache_folder=EMBEDDINGS_PATH
         )
 
     # Instantiate the document vector DB from the path

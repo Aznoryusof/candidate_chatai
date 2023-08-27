@@ -13,14 +13,18 @@ sys.path.append(MAIN_DIR)
 
 DB_PATH = os.environ.get('DB_PATH')
 DOCS_PATH = os.environ.get('DOCS_PATH')
+EMBEDDINGS_PATH = os.environ.get('EMBEDDINGS_PATH')
+EMBEDDINGS_MODEL = os.environ.get('EMBEDDINGS_MODEL')
 CHUNK_SIZE = int(os.environ.get('CHUNK_SIZE'))
 CHUNK_OVERLAP = int(os.environ.get('CHUNK_OVERLAP'))
 
-def setup_knowledge_base(docs_dir, db_path, embedding_model):
+
+def setup_knowledge_base(docs_dir, db_path, embeddings_model):
     loader = DirectoryLoader(docs_dir, glob="**/*.txt")
     docs = loader.load()
     embeddings = HuggingFaceInstructEmbeddings(
-        model_name=embedding_model
+        model_name=embeddings_model,
+        cache_folder=EMBEDDINGS_PATH
     )
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
     texts = text_splitter.split_documents(docs)
@@ -31,5 +35,5 @@ if __name__ == "__main__":
     setup_knowledge_base(
         os.path.join(MAIN_DIR, DOCS_PATH),
         os.path.join(MAIN_DIR, DB_PATH),
-        "hkunlp/instructor-large"
+        EMBEDDINGS_MODEL
     )

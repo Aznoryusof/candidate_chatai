@@ -1,0 +1,10 @@
+openai
+streamlit
+python-dotenv>=1.0
+loguru>=0.7
+langchain>=0.0.273
+unstructured>=0.10
+InstructorEmbedding>=1.0
+torch>=2.0
+sentence-transformers>=2.2
+chromadb>=0.4
