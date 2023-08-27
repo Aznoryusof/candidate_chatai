@@ -60,7 +60,8 @@ docker containers on a Linux machine.
     CHUNK_OVERLAP=0
     MAX_HISTORY_LENGTH=4
     REPHRASED_TOKEN=<REPHRASED>
-
+    ```
+    
 5.  Create the vector database.
     ```
     python database/create_db_from_docs.py
