@@ -2,7 +2,7 @@ llama.cpp
 Brief
 .archive
 .env
-database/db
+database
 .vscode
 deploy.sh
 references

@@ -1,0 +1,8 @@
+FROM python:3.10
+WORKDIR /project/
+COPY ./app_backend/ /project/app_backend/
+COPY ./app_backend/requirements.txt /project/requirements.txt
+RUN pip install --no-cache-dir -r /project/requirements.txt
+
+CMD ["python", "app_backend/api_llama2.py", "--host=0.0.0.0", "--llama-api=http://0.0.0.0:8080"]
+
