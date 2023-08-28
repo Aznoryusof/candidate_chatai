@@ -71,8 +71,11 @@ docker containers on a Linux machine.
     above). The directory containing the models and the .env file would later 
     be attached as volumes to the docker containers at runtime in the subsequent
     steps.
+    For the vector database, Chroma DB is used. This database stores all the
+    documents as a vector embedding so that it can be searched over quickly by
+    the retriever.   
 
-6.  Retrieve the model files.<br>
+7.  Retrieve the model files.<br>
     Two variants of the Llama 2 chat models are provided in this example - 
     a 7B and a 13B model. While the 13B model is slightly more performant, inference
     time is much slower and the model takes longer to download than the 7B model. The two models can be downloaded from my Hugging Face repository into the models directory with the 
@@ -117,7 +120,9 @@ Run the following docker instructions in the main directory for each of the serv
     using 4-bit quantization and plain C/C++, thereby allowing these models to 
     be used on consumer GPU+CPU machines.<br>
     
-    First clone the repository in the current project folder (i.e. candidate_chatai).
+    First clone the repository in the current project folder (i.e. candidate_chatai). *Note: Currently
+    the cloning is done outside the container, but this can be done in the docker container by changing
+    the configurations in the ./0_docker_files/Dockerfile_llama_cpp file.*
     ```
     git clone git@github.com:ggerganov/llama.cpp.git
     ```
@@ -143,7 +148,7 @@ Run the following docker instructions in the main directory for each of the serv
     The following shows the output of the container when running correctly<br>
     <img src="images/backend_model_server.png" />
 
-3.  Frontend Chat Interface Application using Streamlit<br>
+4.  Frontend Chat Interface Application using Streamlit<br>
     ```
     docker build -t candidate_chatai-app_streamlit -f ./0_docker_files/Dockerfile_app_streamlit .
     ```
