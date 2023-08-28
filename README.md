@@ -19,7 +19,7 @@ This application has been tested to successfully run on a laptop with a single R
 GPU that has 6 GB of GDDR6 memory running on Ubuntu 22.04 LTS.
 
 The application uses open-source Python tools including ChromaDB, Langchain, llama.cpp, Streamlit and Flask. The application and logic flow as well as the architecture
-diagram are available in the following [slide deck](./diagrams/SAP Generative AI COE Slides.pdf).
+diagram and my comments are available in the following [slide deck](https://github.com/Aznoryusof/candidate_chatai/blob/master/diagrams/SAP%20Generative%20AI%20COE%20Slides.pdf).
 
 The following describes the step-by-step process of setting up the application using
 docker containers on a Linux machine.
