@@ -18,7 +18,7 @@ the system's GPU and CPU components.
 This application has been tested to successfully run on a laptop with a single RTX 2060 
 GPU that has 6 GB of GDDR6 memory running on Ubuntu 22.04 LTS.
 
-The application is implemented using Langchain, llama.cpp, Streamlit and Flask.
+The application is implemented using ChromaDB, Langchain, llama.cpp, Streamlit and Flask.
 
 The following describes the step-by-step process of setting up the application using
 docker containers on a Linux machine.
