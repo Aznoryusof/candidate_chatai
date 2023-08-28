@@ -18,7 +18,8 @@ the system's GPU and CPU components.
 This application has been tested to successfully run on a laptop with a single RTX 2060 
 GPU that has 6 GB of GDDR6 memory running on Ubuntu 22.04 LTS.
 
-The application uses open-source Python tools including ChromaDB, Langchain, llama.cpp, Streamlit and Flask.
+The application uses open-source Python tools including ChromaDB, Langchain, llama.cpp, Streamlit and Flask. The application and logic flow as well as the architecture
+diagram are available in the following [slide deck](./diagrams/SAP Generative AI COE Slides.pdf).
 
 The following describes the step-by-step process of setting up the application using
 docker containers on a Linux machine.
