@@ -124,7 +124,7 @@ Run the following docker instructions in the main directory for each of the serv
     be used on consumer GPU+CPU machines.<br>
     
     First clone the repository in the current project folder (i.e. candidate_chatai). *Note: Currently in the
-    implementation shwon below, the cloning is done outside the container, but this can be done within the docker container by changing the configurations in the ./0_docker_files/Dockerfile_llama_cpp file.*
+    implementation shown below, the cloning is done outside the container, but this can be done within the docker container by changing the configurations in the ./0_docker_files/Dockerfile_llama_cpp file.*
     ```
     git clone git@github.com:ggerganov/llama.cpp.git
     ```
