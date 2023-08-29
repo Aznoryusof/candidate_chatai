@@ -1,0 +1,29 @@
+version: '3'
+services:
+  app_backend:
+    container_name: candidate_chatai-app_backend
+    image: candidate_chatai-app_backend
+    volumes:
+      - ./.env:/project/.env
+  llama_cpp:
+    container_name: candidate_chatai-llama_cpp
+    image: candidate_chatai-llama_cpp
+    volumes:
+      - ./models:/app/models
+    command: ["-m", "/app/models/7B/ggml-model-q4_0.gguf", "-ngl", "29"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+  app_streamlit:
+    container_name: candidate_chatai-app_streamlit
+    image: candidate_chatai-app_streamlit
+    ports:
+      - 8501:8501
+    volumes:
+      - ./.env:/project/.env
+      - ./models:/project/models
+      - ./database/db:/project/database/db
