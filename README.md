@@ -50,7 +50,7 @@ docker containers on a Linux machine.
     Here I have used 123 as an example.
     ```
     API_KEY=123
-    OPEN_AI_BASE=http://0.0.0.0:8081
+    OPEN_AI_BASE=http://candidate_chatai-app_backend:8081
     DB_PATH=database/db
     DOCS_PATH=database/documents
     LOG_FILE_PATH=logs/llm_output.log
@@ -102,6 +102,11 @@ are:
 - Backend Model Server using [llama.cpp](https://github.com/ggerganov/llama.cpp)
 - Frontend Chat Interface Application using Streamlit
 
+Before we can run the services, we need to create a docker network:
+```
+docker network create candidate_chatai-network
+```
+
 Run the following docker instructions in the main directory for each of the service.
 
 1.  Backend Model API using Flask.<br>
@@ -111,7 +116,7 @@ Run the following docker instructions in the main directory for each of the serv
     ```
     Then run the docker image.
     ```
-    docker run --name candidate_chatai-app_backend --network=host -p 8081:8081 -v ./.env:/project/.env candidate_chatai-app_backend
+    docker run --name candidate_chatai-app_backend --network=candidate_chatai-network -v ./.env:/project/.env candidate_chatai-app_backend
     ```
     The following shows the output of the container when running correctly<br>
     <img src="images/backend_flask_api.png" />
@@ -138,13 +143,13 @@ Run the following docker instructions in the main directory for each of the serv
 
     7B
     ```
-    docker run --gpus all --name candidate_chatai-llama_cpp --network=host -p 8080:8080 -v ./models:/app/models candidate_chatai-llama_cpp -m /app/models/7B/ggml-model-q4_0.gguf -ngl 29
+    docker run --gpus all --name candidate_chatai-llama_cpp --network=candidate_chatai-network -v ./models:/app/models candidate_chatai-llama_cpp -m /app/models/7B/ggml-model-q4_0.gguf -ngl 29
     ```
     or
     
     13B
     ```
-    docker run --gpus all --name candidate_chatai-llama_cpp --network=host -p 8080:8080 -v ./models:/app/models candidate_chatai-llama_cpp -m /app/models/13B/ggml-model-q4_0.gguf -ngl 12
+    docker run --gpus all --name candidate_chatai-llama_cpp --network=candidate_chatai-network -v ./models:/app/models candidate_chatai-llama_cpp -m /app/models/13B/ggml-model-q4_0.gguf -ngl 12
     ```
 
     The following shows the output of the container when running correctly<br>
@@ -156,8 +161,18 @@ Run the following docker instructions in the main directory for each of the serv
     ```
     Then run the docker image and go to http://0.0.0.0:8501 on any web browser.
     ```
-    docker run --name candidate_chatai-app_streamlit --network=host -p 8501:8501 -v ./.env:/project/.env -v ./models:/project/models -v ./database/db:/project/database/db candidate_chatai-app_streamlit
+    docker run --name candidate_chatai-app_streamlit --network=candidate_chatai-network -p 8501:8501 -v ./.env:/project/.env -v ./models:/project/models -v ./database/db:/project/database/db candidate_chatai-app_streamlit
     ```
     
     The following shows the output of the container when running correctly<br>
     <img src="images/app_streamlit.png"/>
+
+## 3. [Extra] Deployment with Docker Compose
+A docker compose file has been added *"docker-compose.yaml"* which easily allows
+starting up of the containers of the 3 images built by simply using the command below
+and going to http://0.0.0.0:8501 on any web browser.
+```
+docker compose up
+```
+*Note: Using this command, a new docker network will be automatically created
+and would be used instead of the one created in part 2.*
