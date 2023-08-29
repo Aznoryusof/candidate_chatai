@@ -27,3 +27,4 @@ services:
       - ./.env:/project/.env
       - ./models:/project/models
       - ./database/db:/project/database/db
+      - ./logs:/project/logs

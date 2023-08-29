@@ -161,13 +161,13 @@ Run the following docker instructions in the main directory for each of the serv
     ```
     Then run the docker image and go to http://0.0.0.0:8501 on any web browser.
     ```
-    docker run --name candidate_chatai-app_streamlit --network=candidate_chatai-network -p 8501:8501 -v ./.env:/project/.env -v ./models:/project/models -v ./database/db:/project/database/db candidate_chatai-app_streamlit
+    docker run --name candidate_chatai-app_streamlit --network=candidate_chatai-network -p 8501:8501 -v ./.env:/project/.env -v ./models:/project/models -v ./database/db:/project/database/db -v ./logs:/project/logs candidate_chatai-app_streamlit
     ```
     
     The following shows the output of the container when running correctly<br>
     <img src="images/app_streamlit.png"/>
 
-## 3. [Extra] Deployment with Docker Compose
+## 3. Deployment with Docker Compose
 A docker compose file has been added *"docker-compose.yaml"* which easily allows
 starting up of the containers of the 3 images built by simply using the command below
 and going to http://0.0.0.0:8501 on any web browser.
@@ -176,3 +176,11 @@ docker compose up
 ```
 *Note: Using this command, a new docker network will be automatically created
 and would be used instead of the one created in part 2.*
+
+## 4. Model Logs
+Chat logs with the model can be accessed from the logs folder after a model
+response has been generated. The following script reformats the logs and shows
+it in a web brower. 
+```
+python logs view_llm_outputs.py
+```
