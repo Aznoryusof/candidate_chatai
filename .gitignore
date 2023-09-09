@@ -13,3 +13,4 @@ logs/*
 models
 venv
 !logs/view_llm_outputs.py
+database/esdata01/*

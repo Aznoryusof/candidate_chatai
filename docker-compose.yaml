@@ -18,6 +18,19 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+  es01:
+    container_name: es01
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.1-amd64
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    volumes:
+      - ./database/esdata01:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
   app_streamlit:
     container_name: candidate_chatai-app_streamlit
     image: candidate_chatai-app_streamlit

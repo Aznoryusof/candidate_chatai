@@ -1,7 +1,7 @@
 import os
 import sys
 from langchain.document_loaders import DirectoryLoader
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import ElasticsearchStore
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from dotenv import load_dotenv
@@ -17,6 +17,7 @@ EMBEDDINGS_PATH = os.environ.get('EMBEDDINGS_PATH')
 EMBEDDINGS_MODEL = os.environ.get('EMBEDDINGS_MODEL')
 CHUNK_SIZE = int(os.environ.get('CHUNK_SIZE'))
 CHUNK_OVERLAP = int(os.environ.get('CHUNK_OVERLAP'))
+ES_URL_LOCAL = os.environ.get('ES_URL_LOCAL')
 
 
 def setup_knowledge_base(docs_dir, db_path, embeddings_model):
@@ -28,7 +29,15 @@ def setup_knowledge_base(docs_dir, db_path, embeddings_model):
     )
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
     texts = text_splitter.split_documents(docs)
-    _ = Chroma.from_documents(texts, embeddings, persist_directory=db_path)
+    _ = ElasticsearchStore.from_documents(
+        texts, 
+        embeddings, 
+        es_url=ES_URL_LOCAL,
+        index_name="candidate_index",
+        strategy=ElasticsearchStore.ApproxRetrievalStrategy(
+            hybrid=True,
+        )
+    )
 
 
 if __name__ == "__main__":

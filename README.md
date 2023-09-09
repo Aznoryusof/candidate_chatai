@@ -161,11 +161,17 @@ Run the following docker instructions in the main directory for each of the serv
     ```
     Then run the docker image and go to http://0.0.0.0:8501 on any web browser.
     ```
-    docker run --name candidate_chatai-app_streamlit --network=candidate_chatai-network -p 8501:8501 -v ./.env:/project/.env -v ./models:/project/models -v ./database/db:/project/database/db -v ./logs:/project/logs candidate_chatai-app_streamlit
+    docker run --name candidate_chatai-app_streamlit --network=candidate_chatai-network -p 8501:8501 -v ./.env:/project/.env -v ./models:/project/models -v ./logs:/project/logs candidate_chatai-app_streamlit
     ```
     
     The following shows the output of the container when running correctly<br>
     <img src="images/app_streamlit.png"/>
+
+5.  Backend Database using Elastic Search
+    ```
+    docker run --name es01 --network=candidate_chatai-network -m 4GB -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "xpack.security.http.ssl.enabled=false" -v ./database/esdata01:/usr/share/elasticsearch/data -t docker.elastic.co/elasticsearch/elasticsearch:8.9.1-amd64
+    ```
+    *Note: For demo purposes, we will disable some of elastic searchs' security features.*
 
 ## 3. Deployment with Docker Compose
 A docker compose file has been added *"docker-compose.yaml"* which easily allows
