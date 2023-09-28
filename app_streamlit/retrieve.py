@@ -4,7 +4,7 @@ import sys
 from dotenv import load_dotenv
 from langchain import PromptTemplate
 from langchain.chains import ConversationalRetrievalChain
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import ElasticsearchStore
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.chat_models import ChatOpenAI
 
@@ -21,6 +21,7 @@ API_KEY=os.environ.get('API_KEY')
 SEED=int(os.environ.get('SEED'))
 TEMPERATURE=float(os.environ.get('TEMPERATURE'))
 TOP_K=int(os.environ.get('TOP_K'))
+ES_URL = os.environ.get('ES_URL')
 
 
 def _get_chat_history(inputs):
@@ -38,16 +39,20 @@ def _get_chat_history(inputs):
 
 def build_chain(embedding_function=None, callbacks=None):
     # Define the embedding function used for documents
-    if not embedding_function:
+    if embedding_function is None:
         embedding_function = HuggingFaceInstructEmbeddings(
             model_name=EMBEDDINGS_MODEL,
             cache_folder=EMBEDDINGS_PATH
         )
 
     # Instantiate the document vector DB from the path
-    db = Chroma(
-        persist_directory=os.path.join(MAIN_DIR, DB_PATH), 
-        embedding_function=embedding_function
+    db = ElasticsearchStore(
+        es_url=ES_URL,
+        index_name="candidate_index",
+        embedding=embedding_function,
+        strategy=ElasticsearchStore.ApproxRetrievalStrategy(
+            # hybrid=True, <- This is a paid feature of ES 
+        )
     )
     
     # Instantiate the llm chat client

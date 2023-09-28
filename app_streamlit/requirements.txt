@@ -8,3 +8,4 @@ InstructorEmbedding>=1.0
 torch>=2.0
 sentence-transformers>=2.2
 chromadb>=0.4
+elasticsearch
