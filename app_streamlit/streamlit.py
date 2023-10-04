@@ -63,7 +63,7 @@ def render_app():
                 """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-    st.subheader("Hello, I am an AI Assistant. \n\n I am here to share more about Aznor and how he can be an asset to GenAI CoE as a Generative AI Platform Engineer. \n\n Ask me anything in the chat box below.")
+    st.subheader("Hello, I am an AI Assistant. \n\n I am here to share more about Aznor and how he can be an asset to your organization. \n\n Ask me anything in the chat box below.")
 
     if "chat_dialogue" not in st.session_state:
         st.session_state["chat_dialogue"] = []
