@@ -35,7 +35,7 @@ def setup_knowledge_base(docs_dir, db_path, embeddings_model):
         es_url=ES_URL_LOCAL,
         index_name="candidate_index",
         strategy=ElasticsearchStore.ApproxRetrievalStrategy(
-            hybrid=True,
+            #hybrid=True,
         )
     )
 
